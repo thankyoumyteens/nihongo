@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="30dp">
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="20dp">
+
+        <TextView
+            android:visibility="gone"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:layout_height="match_parent"
+            android:id="@+id/wordId"
+            />
+        <TextView
+            android:visibility="gone"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:layout_height="match_parent"
+            android:id="@+id/wordPos"
+            />
+        <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:textAlignment="center"
+        android:layout_height="match_parent"
+        android:id="@+id/wordJapanese"
+        />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:layout_height="match_parent"
+            android:id="@+id/wordKanJi"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:layout_height="match_parent"
+            android:id="@+id/wordNominal"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:layout_height="match_parent"
+            android:id="@+id/wordChinese"
+            />
+
+    </LinearLayout>
+
+    <View
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000"
+        />
+
+</LinearLayout>
