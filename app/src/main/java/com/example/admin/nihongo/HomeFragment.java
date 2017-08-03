@@ -40,6 +40,11 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
+            public void onItemOnTouch(View view, int pos) {
+
+            }
+
+            @Override
             public void onItemLongOnClick(View view, int pos) {
                 // 删除操作
                 TextView idT = view.findViewById(R.id.wordId);

@@ -2,6 +2,7 @@ package com.example.admin.nihongo;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
     // 点击监听，长按监听事件
     public interface OnItemOnClickListener{
         void onItemOnClick(View view,int pos);
+        void onItemOnTouch(View view,int pos);
         void onItemLongOnClick(View view ,int pos);
     }
     // 接口的内部变量
@@ -60,6 +62,13 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
                 public void onClick(View view) {
                 // 执行接口中定义的函数, 函数实现在HomeFragment中
                 mOnItemOnClickListener.onItemOnClick(holder.itemView, position);
+                }
+            });
+            holder.itemView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    mOnItemOnClickListener.onItemOnTouch(holder.itemView, position);
+                    return false;
                 }
             });
             // 长按事件
