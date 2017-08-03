@@ -58,16 +58,16 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // 执行接口中定义的函数, 函数实现在HomeFragment中
-                    mOnItemOnClickListener.onItemOnClick(holder.itemView, position);
+                // 执行接口中定义的函数, 函数实现在HomeFragment中
+                mOnItemOnClickListener.onItemOnClick(holder.itemView, position);
                 }
             });
             // 长按事件
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    mOnItemOnClickListener.onItemLongOnClick(holder.itemView, position);
-                    return false;
+                mOnItemOnClickListener.onItemLongOnClick(holder.itemView, position);
+                return false;
                 }
             });
         }
@@ -100,7 +100,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
     public void removeItem(int pos){
         list.remove(pos);
         notifyItemRemoved(pos);
-        // 删除后重新绑定position
+        // 删除后重新为每个item绑定position
         notifyItemRangeChanged(0,list.size());
     }
 
