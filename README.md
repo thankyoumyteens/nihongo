@@ -1,3 +1,3 @@
 # nihongo
 
-app to recite words
+an app to recite words
