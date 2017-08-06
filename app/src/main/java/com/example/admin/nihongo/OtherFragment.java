@@ -99,10 +99,14 @@ public class OtherFragment extends Fragment {
                 }
                 String buffer = array.toString();
                 writer.write(buffer);
+                writer.flush();
+                writer.close();
                 Toast.makeText(getActivity(), "完成, 文件是根目录下的word.json", Toast.LENGTH_LONG).show();
             }catch (Exception e) {
                 Toast.makeText(getActivity(), "失败", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
+            } finally {
+
             }
         }
     }
