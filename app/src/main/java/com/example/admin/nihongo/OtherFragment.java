@@ -23,6 +23,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,7 +55,70 @@ public class OtherFragment extends Fragment {
                 }
             }
         });
+        view.findViewById(R.id.importWords).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (ContextCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                        PackageManager.PERMISSION_GRANTED) {
+                    // 请求权限
+                    requestPermissions(
+                            new String[] { Manifest.permission.READ_EXTERNAL_STORAGE },
+                            2);
+                } else {
+                    importWords();
+                }
+            }
+        });
         return view;
+    }
+
+    private void importWords() {
+        File path = Environment.getExternalStorageDirectory();
+        File file = new File(path, "words.json");
+        try {
+            if (!file.exists()) {
+                Toast.makeText(getActivity(), "失败, words.json文件不存在于根目录", Toast.LENGTH_LONG).show();
+            }
+            FileReader reader = new FileReader(file);
+            List<Word> list = new ArrayList<>();
+            StringBuilder sb = new StringBuilder();
+            char []buf = new char[1024];
+            int len = 0;
+            while((len = reader.read(buf)) != -1){
+                sb.append(buf, 0, len);
+            }
+            reader.close();
+            JSONArray array = new JSONArray(sb.toString());
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject item = (JSONObject) array.get(i);
+                Word word = new Word();
+                word.setId(item.getInt("Id"));
+                word.setJapanese(item.getString("Japanese"));
+                word.setKanJi(item.getString("KanJi"));
+                word.setNominal(item.getString("Nominal"));
+                word.setChinese(item.getString("Chinese"));
+                list.add(word);
+            }
+            MainActivity.database.beginTransaction();
+            for (Word item : list) {
+                String insert = "insert into JapaneseWords(Japanese, KanJi, Nominal, Chinese) values(" +
+                        "'" + item.getJapanese() + "', " +
+                        "'" + item.getKanJi() + "', " +
+                        "'" + item.getNominal() + "', " +
+                        "'" + item.getChinese() + "' " +
+                        ")";
+                MainActivity.database.execSQL(insert);
+            }
+            MainActivity.database.setTransactionSuccessful();
+            MainActivity.database.endTransaction();
+            Toast.makeText(getActivity(), "完成", Toast.LENGTH_LONG).show();
+        }catch (Exception e) {
+            Toast.makeText(getActivity(), "失败", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        } finally {
+
+        }
     }
 
     private void writeToFile() {
@@ -117,6 +181,13 @@ public class OtherFragment extends Fragment {
             case 1:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     writeToFile();
+                } else {
+                    Toast.makeText(getActivity(), "请授权", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case 2:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    importWords();
                 } else {
                     Toast.makeText(getActivity(), "请授权", Toast.LENGTH_SHORT).show();
                 }

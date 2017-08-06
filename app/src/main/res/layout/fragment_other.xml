@@ -1,14 +1,21 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.admin.nihongo.OtherFragment">
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="保存单词到文件"
+        android:text="导出单词到文件"
         android:id="@+id/saveWords"
         />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="从文件导入单词"
+        android:id="@+id/importWords"
+        />
 
-</FrameLayout>
+</LinearLayout>
