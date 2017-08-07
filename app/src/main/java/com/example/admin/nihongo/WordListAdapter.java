@@ -51,8 +51,8 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
         holder.wordPos.setText(position + ""); // 傻X函数不能自动把int转换为String
         holder.japanese.setText(item.getJapanese());
         holder.kanJi.setText(item.getKanJi());
-        holder.nominal.setText(item.getNominal());
-        holder.chinese.setText(item.getChinese());
+//        holder.nominal.setText("[" + item.getNominal() + "]");
+        holder.chinese.setText("[" + item.getNominal() + "]" + item.getChinese());
 
         // 给每个ItemView分别添加监听
         if(mOnItemOnClickListener!=null) {
@@ -101,7 +101,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
             wordPos = itemView.findViewById(R.id.wordPos);
             japanese = itemView.findViewById(R.id.wordJapanese);
             kanJi = itemView.findViewById(R.id.wordKanJi);
-            nominal = itemView.findViewById(R.id.wordNominal);
+//            nominal = itemView.findViewById(R.id.wordNominal);
             chinese = itemView.findViewById(R.id.wordChinese);
         }
     }

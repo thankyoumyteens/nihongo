@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="nominal">
+        <item>名</item>
+        <item>动 </item>
+        <item>形</item>
+        <item>副</item>
+        <item>助</item>
+        <item>代</item>
+        <item>接</item>
+    </string-array>
+</resources>

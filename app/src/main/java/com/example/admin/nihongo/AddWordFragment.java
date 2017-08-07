@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.admin.nihongo.util.FragmentEvents;
@@ -15,7 +16,7 @@ public class AddWordFragment extends Fragment {
     private FragmentEvents events;
     TextView japaneseInput;
     TextView kanJiInput;
-    TextView nominalInput;
+    Spinner nominalInput;
     TextView chineseInput;
 
     @Override
@@ -40,13 +41,13 @@ public class AddWordFragment extends Fragment {
                         "values(?, ?, ?, ?)";
                 String p1 = japaneseInput.getText().toString();
                 String p2 = kanJiInput.getText().toString();
-                String p3 = nominalInput.getText().toString();
+                String p3 = nominalInput.getSelectedItem().toString();
                 String p4 = chineseInput.getText().toString();
                 Object[] params = {
-                    "".equals(p1) ? "未设定" : p1,
-                    "".equals(p2) ? "未设定" : p2,
-                    "".equals(p3) ? "未设定" : p3,
-                    "".equals(p4) ? "未设定" : p4
+                    "".equals(p1) ? " " : p1,
+                    "".equals(p2) ? " " : p2,
+                    "".equals(p3) ? " " : p3,
+                    "".equals(p4) ? " " : p4
                 };
                 events.executeQueryString(queryString, params);
             }

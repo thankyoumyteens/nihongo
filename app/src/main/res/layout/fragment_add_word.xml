@@ -66,14 +66,23 @@
             android:layout_height="wrap_content"
             android:text="词性:"
             />
-        <EditText
-            android:id="@+id/nominalInput"
+        <Spinner
             android:layout_gravity="center"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
+            android:id="@+id/nominalInput"
+            android:entries="@array/nominal"
             />
+        <!--<EditText-->
+            <!--android:id="@+id/nominalInput"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--/>-->
 
     </LinearLayout>
 
