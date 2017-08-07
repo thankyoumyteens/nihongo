@@ -52,6 +52,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
         holder.japanese.setText(item.getJapanese());
         holder.kanJi.setText(item.getKanJi());
 //        holder.nominal.setText("[" + item.getNominal() + "]");
+        // 词性和汉意显示在一起
         holder.chinese.setText("[" + item.getNominal() + "]" + item.getChinese());
 
         // 给每个ItemView分别添加监听
