@@ -10,6 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.admin.nihongo.model.Word;
@@ -17,16 +20,39 @@ import com.example.admin.nihongo.model.Word;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.fragment;
+import static android.R.attr.id;
 import static com.example.admin.nihongo.MainActivity.database;
+import static com.example.admin.nihongo.R.id.chineseInput;
+import static com.example.admin.nihongo.R.id.idEdit;
+import static com.example.admin.nihongo.R.id.japaneseInput;
+import static com.example.admin.nihongo.R.id.kanJiInput;
+import static com.example.admin.nihongo.R.id.nominalInput;
 
 
 public class HomeFragment extends Fragment {
     List<Word> list;
+    LinearLayout showList;
+    LinearLayout edit;
+    TextView idEdit;
+    EditText japaneseEdit;
+    EditText kanJiEdit;
+    Spinner nominalEdit;
+    EditText chineseEdit;
+    View currentView;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        showList = view.findViewById(R.id.list);
+        edit = view.findViewById(R.id.edit);
+        idEdit = view.findViewById(R.id.idEdit);
+        japaneseEdit = view.findViewById(R.id.japaneseEdit);
+        kanJiEdit = view.findViewById(R.id.kanJiEdit);
+        nominalEdit = view.findViewById(R.id.nominalEdit);
+        chineseEdit = view.findViewById(R.id.chineseEdit);
         init();
         RecyclerView recyclerView = view.findViewById(R.id.wordList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(container.getContext());
@@ -34,9 +60,27 @@ public class HomeFragment extends Fragment {
         final WordListAdapter adapter = new WordListAdapter(list);
         // 创建匿名类来实现接口
         adapter.setItemOnClickListener(new WordListAdapter.OnItemOnClickListener() {
+            /**
+             * 修改单词
+             * @param view
+             * @param pos
+             */
             @Override
             public void onItemOnClick(View view, int pos) {
-
+                currentView = view;
+                String id = ((TextView) view.findViewById(R.id.wordId)).getText().toString();
+                String japaneseText = ((TextView) view.findViewById(R.id.wordJapanese)).getText().toString();
+                String kanJiText = ((TextView) view.findViewById(R.id.wordKanJi)).getText().toString();
+                String nominalAndChineseText = ((TextView) view.findViewById(R.id.wordChinese)).getText().toString();
+                String chineseText = nominalAndChineseText.substring(nominalAndChineseText.indexOf("]") + 1);
+                String nominalText = nominalAndChineseText.substring(nominalAndChineseText.indexOf("[") + 1, nominalAndChineseText.indexOf("]"));
+                int nominalPos = getPos(nominalText);
+                idEdit.setText(id);
+                japaneseEdit.setText(japaneseText);
+                kanJiEdit.setText(kanJiText);
+                nominalEdit.setSelection(nominalPos);
+                chineseEdit.setText(chineseText);
+                hide();
             }
 
             @Override
@@ -44,6 +88,11 @@ public class HomeFragment extends Fragment {
 
             }
 
+            /**
+             * 删除单词
+             * @param view
+             * @param pos
+             */
             @Override
             public void onItemLongOnClick(View view, int pos) {
                 // 删除操作
@@ -53,7 +102,59 @@ public class HomeFragment extends Fragment {
             }
         });
         recyclerView.setAdapter(adapter);
+
+        view.findViewById(R.id.editWord).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String id = idEdit.getText().toString();
+                String japaneseText = japaneseEdit.getText().toString();
+                String kanJiText = kanJiEdit.getText().toString();
+                String nominalText = nominalEdit.getSelectedItem().toString();
+                String chineseText = chineseEdit.getText().toString();
+                String queryString = "update JapaneseWords set Japanese=?, KanJi=?, Nominal=?, Chinese=? where Id=?";
+                Object[] params = {
+                        "".equals(japaneseText) ? " " : japaneseText,
+                        "".equals(kanJiText) ? " " : kanJiText,
+                        "".equals(nominalText) ? " " : nominalText,
+                        "".equals(chineseText) ? " " : chineseText,
+                        "".equals(id) ? "0" : id
+                };
+                database.execSQL(queryString, params);
+                // 回显
+                TextView wordJapanese = currentView.findViewById(R.id.wordJapanese);
+                TextView wordKanJi = currentView.findViewById(R.id.wordKanJi);
+                TextView nominalAndChinese = currentView.findViewById(R.id.wordChinese);
+                wordJapanese.setText(japaneseText);
+                wordKanJi.setText(kanJiText);
+                nominalAndChinese.setText("[" + nominalText + "]" + chineseText);
+                show();
+            }
+        });
         return view;
+    }
+
+    private int getPos(String val) {
+        String[] items = getResources().getStringArray(R.array.nominal);
+        for (int i = 0; i < items.length; i++) {
+            if (val.equals(items[i])) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    private void reload() {
+
+    }
+
+    private void hide() {
+        showList.setVisibility(View.GONE);
+        edit.setVisibility(View.VISIBLE);
+    }
+
+    private void show() {
+        edit.setVisibility(View.GONE);
+        showList.setVisibility(View.VISIBLE);
     }
 
     /**

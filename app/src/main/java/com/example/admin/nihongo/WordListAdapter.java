@@ -107,6 +107,10 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
         }
     }
 
+    public void updateItem() {
+        notifyDataSetChanged();
+    }
+
     public void removeItem(int pos){
         list.remove(pos);
         notifyItemRemoved(pos);
