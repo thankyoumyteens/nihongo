@@ -130,6 +130,12 @@ public class HomeFragment extends Fragment {
                 show();
             }
         });
+        view.findViewById(R.id.backToList).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                show();
+            }
+        });
         return view;
     }
 
