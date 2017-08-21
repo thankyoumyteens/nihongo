@@ -14,15 +14,16 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="30dp">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:layout_height="20dp">
+                android:layout_height="wrap_content">
 
                 <TextView
+                    android:textSize="20sp"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:textAlignment="center"
@@ -30,20 +31,15 @@
                     android:text="假名"
                     />
                 <TextView
+                    android:textSize="20sp"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:textAlignment="center"
                     android:layout_height="match_parent"
                     android:text="汉字/英文"
                     />
-                <!--<TextView-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_weight="1"-->
-                <!--android:textAlignment="center"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:text="词性"-->
-                <!--/>-->
                 <TextView
+                    android:textSize="20sp"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:textAlignment="center"
@@ -56,8 +52,8 @@
             <View
                 android:layout_gravity="bottom"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000"
+                android:layout_height="2dp"
+                android:background="#3399FF"
                 />
 
         </LinearLayout>
@@ -68,12 +64,19 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/wordList">
-
         </android.support.v7.widget.RecyclerView>
+
+        <View
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#3399FF"
+            />
 
     </LinearLayout>
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/edit"
         android:orientation="vertical"
         android:layout_width="match_parent"

@@ -17,5 +17,11 @@
         android:text="从文件导入单词"
         android:id="@+id/importWords"
         />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="单词总数"
+        android:id="@+id/wordsCount"
+        />
 
 </LinearLayout>

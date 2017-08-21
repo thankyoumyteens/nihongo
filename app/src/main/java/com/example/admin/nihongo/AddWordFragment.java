@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.admin.nihongo.util.FragmentEvents;
 
@@ -43,13 +44,21 @@ public class AddWordFragment extends Fragment {
                 String p2 = kanJiInput.getText().toString();
                 String p3 = nominalInput.getSelectedItem().toString();
                 String p4 = chineseInput.getText().toString();
+                if ("".equals(p1) || "".equals(p4)) {
+                    Toast.makeText(getContext(), "请输入假名或汉意", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Object[] params = {
-                    "".equals(p1) ? " " : p1,
+                    p1,
                     "".equals(p2) ? " " : p2,
-                    "".equals(p3) ? " " : p3,
-                    "".equals(p4) ? " " : p4
+                    p3,
+                    p4
                 };
                 events.executeQueryString(queryString, params);
+                japaneseInput.setText("");
+                kanJiInput.setText("");
+                nominalInput.setSelection(0);
+                chineseInput.setText("");
             }
         });
         return view;

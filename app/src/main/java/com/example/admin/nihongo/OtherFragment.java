@@ -70,6 +70,12 @@ public class OtherFragment extends Fragment {
                 }
             }
         });
+        view.findViewById(R.id.wordsCount).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         return view;
     }
 
