@@ -73,10 +73,26 @@ public class OtherFragment extends Fragment {
         view.findViewById(R.id.wordsCount).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                int count = getCount();
+                Toast.makeText(getContext(), "单词总数: " + count, Toast.LENGTH_SHORT).show();
             }
         });
         return view;
+    }
+
+    private int getCount() {
+        String select = "select count(*) from JapaneseWords";
+        int count = 0;
+        //查询获得游标
+        Cursor cursor = MainActivity.database.rawQuery(select, null);
+        //判断游标是否为空
+        if(cursor.moveToFirst()) {
+//            cursor.moveToNext();
+            count = cursor.getInt(0);
+            cursor.close();
+        }
+        count--; // 去掉一条多余的数据
+        return count;
     }
 
     private void importWords() {
@@ -107,6 +123,14 @@ public class OtherFragment extends Fragment {
                 list.add(word);
             }
             MainActivity.database.beginTransaction();
+            // 清空原来的单词
+            String clear = "delete from JapaneseWords";
+            MainActivity.database.execSQL(clear);
+            /**
+             * 蜜汁bug: 表创建后第一次insert无效, 只好先insert一条无用数据
+             */
+            MainActivity.database.execSQL("insert into JapaneseWords(Japanese, KanJi, Nominal, Chinese) values('','','','')");
+
             for (Word item : list) {
                 String insert = "insert into JapaneseWords(Japanese, KanJi, Nominal, Chinese) values(" +
                         "'" + item.getJapanese() + "', " +
@@ -122,8 +146,6 @@ public class OtherFragment extends Fragment {
         }catch (Exception e) {
             Toast.makeText(getActivity(), "失败", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
-        } finally {
-
         }
     }
 

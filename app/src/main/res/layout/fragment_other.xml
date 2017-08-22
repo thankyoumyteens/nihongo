@@ -14,7 +14,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="从文件导入单词"
+        android:text="从文件导入单词(清空原有)"
         android:id="@+id/importWords"
         />
     <Button
