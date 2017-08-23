@@ -10,21 +10,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.admin.nihongo.util.DatabaseOperation;
 import com.example.admin.nihongo.util.FragmentEvents;
 
 
 public class AddWordFragment extends Fragment {
-    private FragmentEvents events;
     TextView japaneseInput;
     TextView kanJiInput;
     Spinner nominalInput;
     TextView chineseInput;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        events = (FragmentEvents) context;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,11 +48,12 @@ public class AddWordFragment extends Fragment {
                     p3,
                     p4
                 };
-                events.executeQueryString(queryString, params);
+                DatabaseOperation.exec(queryString, params);
                 japaneseInput.setText("");
                 kanJiInput.setText("");
                 nominalInput.setSelection(0);
                 chineseInput.setText("");
+                Toast.makeText(getContext(), "完成",Toast.LENGTH_SHORT).show();
             }
         });
         return view;

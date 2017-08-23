@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.admin.nihongo.model.Word;
+import com.example.admin.nihongo.util.DatabaseOperation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,7 +120,7 @@ public class HomeFragment extends Fragment {
                         "".equals(chineseText) ? " " : chineseText,
                         "".equals(id) ? "0" : id
                 };
-                database.execSQL(queryString, params);
+                DatabaseOperation.exec(queryString, params);
                 // 回显
                 TextView wordJapanese = currentView.findViewById(R.id.wordJapanese);
                 TextView wordKanJi = currentView.findViewById(R.id.wordKanJi);
@@ -147,10 +148,6 @@ public class HomeFragment extends Fragment {
             }
         }
         return 0;
-    }
-
-    private void reload() {
-
     }
 
     private void hide() {
@@ -182,7 +179,7 @@ public class HomeFragment extends Fragment {
                         id
                 };
                 // 从数据库中删除
-                database.execSQL(queryString, params);
+                DatabaseOperation.exec(queryString, params);
                 // 从RecyclerView控件中删除
                 adapter.removeItem(pos);
             }
@@ -201,23 +198,6 @@ public class HomeFragment extends Fragment {
      * 查询数据库中的所有单词
      */
     private void init() {
-        list = new ArrayList<>();
-
-        String queryString = "select Id, Japanese, KanJi, Nominal, Chinese from JapaneseWords";
-        //查询获得游标
-        Cursor cursor = database.rawQuery(queryString, null);
-        //判断游标是否为空
-        if(cursor.moveToFirst()) {
-            //遍历游标
-            while(cursor.moveToNext()) {
-                int id = cursor.getInt(0);
-                String japanese = cursor.getString(1);
-                String kanJi = cursor.getString(2);
-                String nominal = cursor.getString(3);
-                String chinese = cursor.getString(4);
-                list.add(new Word(id, japanese, kanJi, nominal, chinese));
-            }
-            cursor.close();
-        }
+        list = DatabaseOperation.getAllWords();
     }
 }

@@ -8,5 +8,5 @@ import android.support.v4.app.Fragment;
 
 public interface FragmentEvents {
     void changeFragment(Fragment fragment);
-    void executeQueryString(String queryString, Object[] params);
+//    void executeQueryString(String queryString, Object[] params);
 }

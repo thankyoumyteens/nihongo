@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.admin.nihongo.model.Word;
+import com.example.admin.nihongo.util.DatabaseOperation;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,20 +78,19 @@ public class OtherFragment extends Fragment {
                 Toast.makeText(getContext(), "单词总数: " + count, Toast.LENGTH_SHORT).show();
             }
         });
+        view.findViewById(R.id.test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<Word> list = DatabaseOperation.getAllWords();
+                System.out.println();
+            }
+        });
         return view;
     }
 
     private int getCount() {
         String select = "select count(*) from JapaneseWords";
-        int count = 0;
-        //查询获得游标
-        Cursor cursor = MainActivity.database.rawQuery(select, null);
-        //判断游标是否为空
-        if(cursor.moveToFirst()) {
-//            cursor.moveToNext();
-            count = cursor.getInt(0);
-            cursor.close();
-        }
+        int count = DatabaseOperation.getRecordCount(select, null);
         count--; // 去掉一条多余的数据
         return count;
     }
@@ -122,14 +122,14 @@ public class OtherFragment extends Fragment {
                 word.setChinese(item.getString("Chinese"));
                 list.add(word);
             }
-            MainActivity.database.beginTransaction();
             // 清空原来的单词
             String clear = "delete from JapaneseWords";
-            MainActivity.database.execSQL(clear);
+            DatabaseOperation.exec(clear, null);
             /**
              * 蜜汁bug: 表创建后第一次insert无效, 只好先insert一条无用数据
              */
-            MainActivity.database.execSQL("insert into JapaneseWords(Japanese, KanJi, Nominal, Chinese) values('','','','')");
+            String first = "insert into JapaneseWords(Japanese, KanJi, Nominal, Chinese) values('','','','')";
+            DatabaseOperation.exec(first, null);
 
             for (Word item : list) {
                 String insert = "insert into JapaneseWords(Japanese, KanJi, Nominal, Chinese) values(" +
@@ -138,10 +138,8 @@ public class OtherFragment extends Fragment {
                         "'" + item.getNominal() + "', " +
                         "'" + item.getChinese() + "' " +
                         ")";
-                MainActivity.database.execSQL(insert);
+                DatabaseOperation.exec(insert, null);
             }
-            MainActivity.database.setTransactionSuccessful();
-            MainActivity.database.endTransaction();
             Toast.makeText(getActivity(), "完成", Toast.LENGTH_LONG).show();
         }catch (Exception e) {
             Toast.makeText(getActivity(), "失败", Toast.LENGTH_SHORT).show();
@@ -161,24 +159,8 @@ public class OtherFragment extends Fragment {
                 }
 //                FileOutputStream out = new FileOutputStream(file);
                 FileWriter writer = new FileWriter(file);
-                List<Word> list = new ArrayList<>();
+                List<Word> list = DatabaseOperation.getAllWords();
 
-                String queryString = "select Id, Japanese, KanJi, Nominal, Chinese from JapaneseWords";
-                //查询获得游标
-                Cursor cursor = database.rawQuery(queryString, null);
-                //判断游标是否为空
-                if(cursor.moveToFirst()) {
-                    //遍历游标
-                    while(cursor.moveToNext()) {
-                        int id = cursor.getInt(0);
-                        String japanese = cursor.getString(1);
-                        String kanJi = cursor.getString(2);
-                        String nominal = cursor.getString(3);
-                        String chinese = cursor.getString(4);
-                        list.add(new Word(id, japanese, kanJi, nominal, chinese));
-                    }
-                    cursor.close();
-                }
                 JSONArray array = new JSONArray();
                 for (Word item : list) {
                     JSONObject object = new JSONObject();
